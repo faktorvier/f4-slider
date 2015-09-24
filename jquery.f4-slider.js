@@ -105,9 +105,6 @@
 	// Main binding
 	$.fn.f4slider = function(options) {
 
-		// Bind keys
-		$.f4slider.bindKeys();
-
 		// Video: Check if video plugin is available
 		$.f4slider.global.videoPluginAvailable = (typeof $.video != 'undefined');
 
@@ -119,7 +116,13 @@
 			sliderAction = options;
 		} else {
 			sliderConfig = $.extend($.extend({}, $.f4slider.config), options);
+
+			// Bind keys
+			if(sliderConfig.enableKeys) {
+				$.f4slider.bindKeys();
+			}
 		}
+
 
 		// Bind each slider
 		return this.each(function() {
