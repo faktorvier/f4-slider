@@ -1,4 +1,4 @@
-/*! FAKTOR VIER Slider v1.0.3 | (c) 2015 FAKTOR VIER GmbH | http://faktorvier.ch */
+/*! FAKTOR VIER Slider v1.0.4 | (c) 2015 FAKTOR VIER GmbH | http://faktorvier.ch */
 
 (function($) {
 
@@ -292,11 +292,14 @@
 			// METHOD: Start autoplay
 			var startAutoplay = function() {
 				stopAutoplay();
-				sliderTimeout = setTimeout(function() {
-					slideNext();
-				}, sliderConfig.autoPlayTimeout);
 
-				$slider.data('f4slider-timeout', sliderTimeout);
+				if($slides.length > 1) {
+					sliderTimeout = setTimeout(function() {
+						slideNext();
+					}, sliderConfig.autoPlayTimeout);
+
+					$slider.data('f4slider-timeout', sliderTimeout);
+				}
 			}
 
 			// METHOD: Stop autoplay
