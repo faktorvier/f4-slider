@@ -3,6 +3,9 @@ FAKTOR VIER Slider
 
 
 ## Changelog
+##### v1.0.6 (2015-11-24)
+data-slider-ref selector fixed
+
 ##### v1.0.5 (2015-09-30)
 Clear autoplay timeout on destroy
 
