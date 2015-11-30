@@ -1,4 +1,4 @@
-/*! FAKTOR VIER Slider v1.0.6 | (c) 2015 FAKTOR VIER GmbH | http://faktorvier.ch */
+/*! FAKTOR VIER Slider v1.0.7 | (c) 2015 FAKTOR VIER GmbH | http://faktorvier.ch */
 
 (function($) {
 
@@ -393,7 +393,7 @@
 					// onSlideOutEnd
 					var outEndTriggered = false;
 
-					$previousSlide.one('transitionend webkitTransitionEnd oTransitionEnd', function(e) {
+					transitionEndOne($previousSlide, function(e) {
 						if(outEndTriggered) return false;
 
 						$(this).removeAttr(sliderConfig.attrSlideOut);
@@ -432,7 +432,7 @@
 						startVideoAutoplay($currentSlide);
 					}
 
-					$currentSlide.one('transitionend webkitTransitionEnd oTransitionEnd', function(e) {
+					transitionEndOne($currentSlide, function(e) {
 						if(inEndTriggered) return false;
 
 						$(this).removeAttr(sliderConfig.attrSlideIn);
@@ -471,6 +471,44 @@
 				slide(newIndex);
 			}
 
+			// Transition end one
+			var transitionEndOne = function($element, callback) {
+				var triggered = false;
+
+				$element.one('transitionend webkitTransitionEnd oTransitionEnd', function(e) {
+					if(!triggered) {
+						callback(e);
+						//triggered = true;
+					}
+				});
+
+				// Fallback for no-transition
+				if(!detectCssSupport('transition')) {
+					$element.trigger('transitionend');
+				}
+			};
+
+			// Detect css support
+			var detectCssSupport = function(featurename) {
+				var supported = false;
+				var domPrefixes = 'Webkit Moz O ms Khtml'.split(' ');
+				var elm = document.createElement('div');
+
+				if(elm.style[featurename] !== undefined ) {
+					supported = true;
+				}
+
+				if(supported === false) {
+					for(var i = 0; i < domPrefixes.length; i++) {
+						if(elm.style[domPrefixes[i] + featurename] !== undefined) {
+							supported = true;
+							break;
+						}
+					}
+				}
+
+				return supported;
+			}
 			// Do action
 			if(sliderAction === null) {
 				init();
