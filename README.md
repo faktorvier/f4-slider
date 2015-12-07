@@ -3,8 +3,12 @@ FAKTOR VIER Slider
 
 
 ## Changelog
-##### v1.0.7 (2015-12-07)
+
+##### v1.0.8 (2015-12-07)
 data-slider-ref selector bugfixing
+
+##### v1.0.7 (2015-11-30)
+transitionEnd fallback for non-supported browsers added
 
 ##### v1.0.6 (2015-11-24)
 data-slider-ref selector fixed
