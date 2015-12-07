@@ -1,4 +1,4 @@
-/*! FAKTOR VIER Slider v1.0.6 | (c) 2015 FAKTOR VIER GmbH | http://faktorvier.ch */
+/*! FAKTOR VIER Slider v1.0.7 | (c) 2015 FAKTOR VIER GmbH | http://faktorvier.ch */
 
 (function($) {
 
@@ -147,6 +147,9 @@
 
 			if($triggersRef.length > 0) {
 				$triggers = $triggersRef.find('[' + sliderConfig.attrTrigger + ']');
+				if($triggers.length === 0) {
+					$triggers = $triggersRef;
+				}
 			} else {
 				$triggers = $slider.find('[' + sliderConfig.attrTrigger + ']');
 			}
