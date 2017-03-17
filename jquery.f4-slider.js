@@ -1,4 +1,4 @@
-/*! FAKTOR VIER Slider v1.0.8 | (c) 2015 FAKTOR VIER GmbH | http://faktorvier.ch */
+/*! FAKTOR VIER Slider v1.0.9 | (c) 2017 FAKTOR VIER GmbH | http://faktorvier.ch */
 
 (function($) {
 
@@ -160,12 +160,14 @@
 			var $currentSlide = null;
 			var $currentTrigger = null;
 			var currentSlideIndex = 0;
-
+			
 			if(slideCount > 0) {
 				$currentSlide = $slides.filter('[' + sliderConfig.attrSlideCurrent + ']');
 				$currentTrigger = $triggers.filter('[' + sliderConfig.attrTriggerCurrent + ']');
 				currentSlideIndex = $slides.index($currentSlide) == -1 ? 0 : $slides.index($currentSlide);
 			}
+			
+			var isMouseOver = false;
 
 			// METHOD: Init
 			var init = function() {
@@ -271,10 +273,12 @@
 				if(sliderConfig.autoPlay) {
 					$slider.find('[' + sliderConfig.attrPauseAutoPlay + ']').addBack('[' + sliderConfig.attrPauseAutoPlay + ']').bind('mouseenter', function(e) {
 						e.stopPropagation();
+						isMouseOver = true;
 
 						stopAutoplay();
 
 						$(this).one('mouseleave', function() {
+							isMouseOver = false;
 							startAutoplay();
 						});
 					});
@@ -370,7 +374,7 @@
 			// METHOD: Slide
 			var slide = function(newIndex) {
 				//if(newIndex != currentSlideIndex) {
-					if(sliderConfig.autoPlay) {
+					if(sliderConfig.autoPlay && !isMouseOver) {
 						//stopAutoplay();
 						startAutoplay();
 					}
