@@ -1,4 +1,4 @@
-/*! FAKTOR VIER Slider v1.0.9 | (c) 2017 FAKTOR VIER GmbH | http://faktorvier.ch */
+/*! FAKTOR VIER Slider v1.0.10 | (c) 2017 FAKTOR VIER GmbH | http://faktorvier.ch */
 
 (function($) {
 
@@ -13,6 +13,7 @@
 			attrInit: 'data-slider-init',
 
 			attrSlider: 'data-slider',
+			attrSliderHidden: 'data-slider-hidden',
 			attrSlide: 'data-slide',
 			attrSlideCurrent: 'data-slide-current',
 			attrSlideElement: 'data-slide-element',
@@ -71,10 +72,16 @@
 
 			// Get current most active slider
 			var $activeSlider = $('[' + $.f4slider.global.attrKeysEnabled + ']').filter(':visible').filter(function() {
+				var $thisSlider = $(this);
+
+				if($thisSlider.is('[' + $thisSlider.data('f4slider').config.attrSliderHidden + ']')) {
+					return false;
+				}
+
 				var boundTop = $(window).scrollTop();
 				var boundBottom = boundTop + $(window).height();
-				var elementTop = $(this).offset().top;
-				var elementBottom = elementTop + $(this).height();
+				var elementTop = $thisSlider.offset().top;
+				var elementBottom = elementTop + $thisSlider.height();
 				var isVisible = (elementTop <= boundBottom && elementBottom >= boundTop) || (elementBottom >= boundTop && elementTop <= boundBottom);
 
 				return isVisible;
@@ -160,13 +167,13 @@
 			var $currentSlide = null;
 			var $currentTrigger = null;
 			var currentSlideIndex = 0;
-			
+
 			if(slideCount > 0) {
 				$currentSlide = $slides.filter('[' + sliderConfig.attrSlideCurrent + ']');
 				$currentTrigger = $triggers.filter('[' + sliderConfig.attrTriggerCurrent + ']');
 				currentSlideIndex = $slides.index($currentSlide) == -1 ? 0 : $slides.index($currentSlide);
 			}
-			
+
 			var isMouseOver = false;
 
 			// METHOD: Init

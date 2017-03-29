@@ -4,8 +4,11 @@ FAKTOR VIER Slider
 
 ## Changelog
 
+##### v1.0.10 (2017-03-29)
+Add data-slider-hidden attribute for temporary disabling the key events
+
 ##### v1.0.9 (2017-03-17)
-fixed autoplay after slide click, if mouse is still over
+Fix autoplay after slide click, if mouse is still over
 
 ##### v1.0.8 (2015-12-07)
 data-slider-ref selector bugfixing
