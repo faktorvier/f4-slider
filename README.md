@@ -4,6 +4,9 @@ FAKTOR VIER Slider
 
 ## Changelog
 
+##### v1.0.11 (2021-04-22)
+Fix autoplay index on trigger click
+
 ##### v1.0.10 (2017-03-29)
 Add data-slider-hidden attribute for temporary disabling the key events
 

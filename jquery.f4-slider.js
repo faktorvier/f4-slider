@@ -1,15 +1,15 @@
-/*! FAKTOR VIER Slider v1.0.10 | (c) 2017 FAKTOR VIER GmbH | http://faktorvier.ch */
+/*! FAKTOR VIER Slider v1.0.11 | (c) 2021 FAKTOR VIER GmbH | http://faktorvier.ch */
 
 (function($) {
 
 	// Global object
 	$.f4slider = {
-		global : {
+		global: {
 			attrKeysEnabled: 'data-slider-keys-enabled',
-			allKeys : [],
-			videoPluginAvailable : false
+			allKeys: [],
+			videoPluginAvailable: false
 		},
-		config : {
+		config: {
 			attrInit: 'data-slider-init',
 
 			attrSlider: 'data-slider',
@@ -66,7 +66,7 @@
 			e.preventDefault();
 
 			// Check if pressed key is in use, if not, ignore this stuff
-			if($.inArray(e.keyCode, $.f4slider.global.allKeys) == -1) {
+			if ($.inArray(e.keyCode, $.f4slider.global.allKeys) == -1) {
 				return;
 			}
 
@@ -74,7 +74,7 @@
 			var $activeSlider = $('[' + $.f4slider.global.attrKeysEnabled + ']').filter(':visible').filter(function() {
 				var $thisSlider = $(this);
 
-				if($thisSlider.is('[' + $thisSlider.data('f4slider').config.attrSliderHidden + ']')) {
+				if ($thisSlider.is('[' + $thisSlider.data('f4slider').config.attrSliderHidden + ']')) {
 					return false;
 				}
 
@@ -88,15 +88,15 @@
 			}).first();
 
 			// Bind keys
-			if($activeSlider.length) {
+			if ($activeSlider.length) {
 				var sliderConfig = $activeSlider.data('f4slider').config;
 
-				if(e.keyCode == sliderConfig.keyNext) {
+				if (e.keyCode == sliderConfig.keyNext) {
 					e.preventDefault();
 					$activeSlider.f4slider('next');
 				}
 
-				if(e.keyCode == sliderConfig.keyPrev) {
+				if (e.keyCode == sliderConfig.keyPrev) {
 					e.preventDefault();
 					$activeSlider.f4slider('previous');
 				}
@@ -119,13 +119,13 @@
 		var sliderConfig = null;
 		var sliderAction = null;
 
-		if(typeof options == 'string') {
+		if (typeof options == 'string') {
 			sliderAction = options;
 		} else {
 			sliderConfig = $.extend($.extend({}, $.f4slider.config), options);
 
 			// Bind keys
-			if(sliderConfig.enableKeys) {
+			if (sliderConfig.enableKeys) {
 				$.f4slider.bindKeys();
 			}
 		}
@@ -137,7 +137,7 @@
 			var sliderTimeout = null
 
 			// Get config from slider instance
-			if(typeof $(this).data('f4slider') !== 'undefined') {
+			if (typeof $(this).data('f4slider') !== 'undefined') {
 				sliderConfig = $(this).data('f4slider').config;
 				sliderTimeout = $(this).data('f4slider-timeout');
 			}
@@ -147,14 +147,14 @@
 			var sliderName = $slider.attr(sliderConfig.attrSlider);
 			var $slides = $slider.find('[' + sliderConfig.attrSlide + ']');
 			var $slides_videos = $slides.find('[' + sliderConfig.attrVideo + ']');
-			var video_plugin_default = ( $.f4slider.global.videoPluginAvailable && sliderConfig.videoPluginDefaultBehavior && $slides_videos.length );
+			var video_plugin_default = ($.f4slider.global.videoPluginAvailable && sliderConfig.videoPluginDefaultBehavior && $slides_videos.length);
 
 			var $triggers = [];
 			var $triggersRef = $('[' + sliderConfig.attrTriggerRef + '="' + sliderName + '"]');
 
-			if($triggersRef.length > 0) {
+			if ($triggersRef.length > 0) {
 				$triggers = $triggersRef.find('[' + sliderConfig.attrTrigger + ']');
-				if($triggers.length === 0) {
+				if ($triggers.length === 0) {
 					$triggers = $triggersRef;
 				}
 			} else {
@@ -168,7 +168,7 @@
 			var $currentTrigger = null;
 			var currentSlideIndex = 0;
 
-			if(slideCount > 0) {
+			if (slideCount > 0) {
 				$currentSlide = $slides.filter('[' + sliderConfig.attrSlideCurrent + ']');
 				$currentTrigger = $triggers.filter('[' + sliderConfig.attrTriggerCurrent + ']');
 				currentSlideIndex = $slides.index($currentSlide) == -1 ? 0 : $slides.index($currentSlide);
@@ -179,36 +179,34 @@
 			// METHOD: Init
 			var init = function() {
 				$slider.data('f4slider', {
-					config : sliderConfig,
-					sliderTimeout : sliderTimeout
+					config: sliderConfig,
+					sliderTimeout: sliderTimeout
 				});
 
 				$.f4slider.global.allKeys.push(sliderConfig.keyPrev);
 				$.f4slider.global.allKeys.push(sliderConfig.keyNext);
 
 				// Video: Init videos
-				if(video_plugin_default) {
+				if (video_plugin_default) {
 					$slides_videos.video();
-					$currentSlide.find('[' + sliderConfig.attrVideo + '][' + sliderConfig.attrVideoAutoPlay +']').video('play')
+					$currentSlide.find('[' + sliderConfig.attrVideo + '][' + sliderConfig.attrVideoAutoPlay + ']').video('play')
 				}
 
-				if(slideCount > 1) {
-					if(sliderConfig.sliderInitDelay <= 0) {
+				if (slideCount > 1) {
+					if (sliderConfig.sliderInitDelay <= 0) {
 						$slider.attr($.f4slider.global.attrKeysEnabled, '');
 						$slider.attr(sliderConfig.attrInit, '');
 						slide(currentSlideIndex);
 						bind();
 					} else {
-						setTimeout(function(){
-								$slider.attr($.f4slider.global.attrKeysEnabled, '');
-								$slider.attr(sliderConfig.attrInit, '');
-								slide(currentSlideIndex);
-								bind();
-							},
-							sliderConfig.sliderInitDelay
-						);
+						var delayTimeout = setTimeout(function() {
+							$slider.attr($.f4slider.global.attrKeysEnabled, '');
+							$slider.attr(sliderConfig.attrInit, '');
+							slide(currentSlideIndex);
+							bind();
+						}, sliderConfig.sliderInitDelay);
 					}
-				} else if(slideCount == 1) {
+				} else if (slideCount == 1) {
 					$slider.attr(sliderConfig.attrInit, '');
 					slide(currentSlideIndex);
 				}
@@ -232,7 +230,7 @@
 			// METHOD: Bind
 			var bind = function() {
 				// Video: Bind events
-				if(video_plugin_default) {
+				if (video_plugin_default) {
 					$slides_videos.addVideoEvent(
 						'play',
 						function(e, $video) {
@@ -250,34 +248,29 @@
 					);*/
 				}
 
-				$triggers.on('click', function(e){
+				$triggers.on('click', function(e) {
 					e.preventDefault();
+					e.stopPropagation();
 
 					var $trigger = $(this);
 
-					if(typeof $trigger.attr(sliderConfig.attrTriggerCurrent) == 'undefined') {
+					if (typeof $trigger.attr(sliderConfig.attrTriggerCurrent) == 'undefined') {
 						var triggerType = $trigger.attr(sliderConfig.attrTrigger);
-						var newIndex = 0;
+						var newIndex = parseInt(triggerType);
 
-						if(!isNaN(parseInt(triggerType))) {
-							newIndex = parseInt(triggerType);
+						if (!isNaN(newIndex)) {
+							slide(newIndex);
 						} else {
-							newIndex = (triggerType == 'prev') ? currentSlideIndex - 1 : currentSlideIndex + 1;
-
-							if(newIndex > slideMaxIndex) {
-								newIndex = 0;
-							}
-
-							if(newIndex < 0) {
-								newIndex = slideMaxIndex;
+							if (triggerType == 'prev') {
+								slidePrevious();
+							} else {
+								slideNext();
 							}
 						}
-
-						slide(newIndex);
 					}
 				});
 
-				if(sliderConfig.autoPlay) {
+				if (sliderConfig.autoPlay) {
 					$slider.find('[' + sliderConfig.attrPauseAutoPlay + ']').addBack('[' + sliderConfig.attrPauseAutoPlay + ']').bind('mouseenter', function(e) {
 						e.stopPropagation();
 						isMouseOver = true;
@@ -291,7 +284,7 @@
 					});
 				}
 
-				if(sliderConfig.enableSwipe && typeof $slider.swipe != 'undefined') {
+				if (sliderConfig.enableSwipe && typeof $slider.swipe != 'undefined') {
 					$slider.swipe({
 						swipeLeft: function() {
 							slideNext();
@@ -309,45 +302,43 @@
 			var startAutoplay = function() {
 				stopAutoplay();
 
-				if($slides.length > 1) {
-					sliderTimeout = setTimeout(function() {
+				if ($slides.length > 1) {
+					$slider.data('f4slider-timeout', setTimeout(function() {
 						slideNext();
-					}, sliderConfig.autoPlayTimeout);
-
-					$slider.data('f4slider-timeout', sliderTimeout);
+					}, sliderConfig.autoPlayTimeout));
 				}
 			}
 
 			// METHOD: Stop autoplay
 			var stopAutoplay = function() {
-				clearTimeout(sliderTimeout);
+				clearTimeout($slider.data('f4slider-timeout'));
 			}
 
 			// METHOD: Start video autoplay
 			var startVideoAutoplay = function($currentSlide) {
-				var $videos = $currentSlide.find('[' + sliderConfig.attrVideo + '][' + sliderConfig.attrVideoAutoPlay +']');
+				var $videos = $currentSlide.find('[' + sliderConfig.attrVideo + '][' + sliderConfig.attrVideoAutoPlay + ']');
 
 				$videos.each(function() {
 					var $video = $(this);
 
 					// html5 video
-					if($video.prop('tagName').toLowerCase() == 'video') {
+					if ($video.prop('tagName').toLowerCase() == 'video') {
 						//stopAutoplay();
 						$video.get(0).play();
 
-						if($video.get(0).paused) {
+						if ($video.get(0).paused) {
 							startAutoplay();
 						}
 					}
 
 					// Youtube video
-					if($video.prop('tagName').toLowerCase() == 'iframe' && $video.attr('src').indexOf('youtu') !== -1) {
+					if ($video.prop('tagName').toLowerCase() == 'iframe' && $video.attr('src').indexOf('youtu') !== -1) {
 						stopAutoplay();
 
 						var videoUrl = $video.attr('src');
 						var videoUrlNew = videoUrl.replace('&amp;', '&').replace(/\autoplay=[0-9]{1}/, '').replace('?&', '?').replace('??', '?').replace(/[\?&]$/, '').replace('&', '&amp;');
 
-						videoUrlNew = videoUrlNew + ( videoUrlNew.indexOf('?') === -1 ? '?' : '&' ) + 'autoplay=1';
+						videoUrlNew = videoUrlNew + (videoUrlNew.indexOf('?') === -1 ? '?' : '&') + 'autoplay=1';
 
 						$video.attr('src', videoUrlNew);
 					}
@@ -364,12 +355,12 @@
 					var $video = $(this);
 
 					// html5 video
-					if($video.prop('tagName').toLowerCase() == 'video') {
+					if ($video.prop('tagName').toLowerCase() == 'video') {
 						$video.get(0).pause();
 					}
 
 					// Youtube video
-					if($video.prop('tagName').toLowerCase() == 'iframe' && $video.attr('src').indexOf('youtu') !== -1) {
+					if ($video.prop('tagName').toLowerCase() == 'iframe' && $video.attr('src').indexOf('youtu') !== -1) {
 						var videoUrl = $video.attr('src');
 						var videoUrlNew = videoUrl.replace('&amp;', '&').replace(/\autoplay=[0-9]{1}/, '').replace('?&', '?').replace('??', '?').replace(/[\?&]$/, '').replace('&', '&amp;');
 
@@ -380,94 +371,86 @@
 
 			// METHOD: Slide
 			var slide = function(newIndex) {
-				//if(newIndex != currentSlideIndex) {
-					if(sliderConfig.autoPlay && !isMouseOver) {
-						//stopAutoplay();
-						startAutoplay();
+				if (sliderConfig.autoPlay && !isMouseOver) {
+					startAutoplay();
+				}
+
+				// Set previous slide
+				$previousSlide = $currentSlide;
+
+				// Set direction attr
+				if (typeof $previousSlide.attr(sliderConfig.attrSlide) != 'undefined') {
+					if ($previousSlide.attr(sliderConfig.attrSlide) < newIndex) {
+						$slider.attr(sliderConfig.attrSlideNext, '');
+					} else {
+						$slider.attr(sliderConfig.attrSlidePrev, '');
 					}
+				}
 
-					// Set previous slide
-					$previousSlide = $currentSlide;
+				// onSlideOutStart
+				sliderConfig.onSlideOutStart($previousSlide);
 
-					// Set direction attr
-					if(typeof $previousSlide.attr(sliderConfig.attrSlide) != 'undefined') {
-						if($previousSlide.attr(sliderConfig.attrSlide) < newIndex) {
-							$slider.attr(sliderConfig.attrSlideNext, '');
-						} else {
-							$slider.attr(sliderConfig.attrSlidePrev, '');
-						}
-					}
+				// Stop video autoplay
+				stopVideoAutoplay($previousSlide);
 
-					// onSlideOutStart
-					sliderConfig.onSlideOutStart($previousSlide);
+				// onSlideOutEnd
+				var outEndTriggered = false;
 
-					// Stop video autoplay
-					stopVideoAutoplay($previousSlide);
+				transitionEndOne($previousSlide, function(e) {
+					if (outEndTriggered) return false;
 
-					// onSlideOutEnd
-					var outEndTriggered = false;
+					$previousSlide.removeAttr(sliderConfig.attrSlideOut);
 
-					transitionEndOne($previousSlide, function(e) {
-						if(outEndTriggered) return false;
+					$slider.removeAttr(sliderConfig.attrSlidePrev);
+					$slider.removeAttr(sliderConfig.attrSlideNext);
 
-						$(this).removeAttr(sliderConfig.attrSlideOut);
+					sliderConfig.onSlideOutEnd($previousSlide);
 
-						$slider.removeAttr(sliderConfig.attrSlidePrev);
-						$slider.removeAttr(sliderConfig.attrSlideNext);
+					outEndTriggered = true;
+				});
 
-						sliderConfig.onSlideOutEnd($(this));
-						//sliderConfig.onSlideOutEnd($(previousSlide));
+				$currentSlide.attr(sliderConfig.attrSlideOut, '');
+				$slides.removeAttr(sliderConfig.attrSlideCurrent);
+				$triggers.removeAttr(sliderConfig.attrTriggerCurrent);
 
-						outEndTriggered = true;
+				currentSlideIndex = newIndex;
+				$currentSlide = $slides.filter('[' + sliderConfig.attrSlide + '="' + currentSlideIndex + '"]');
+				$currentSlide.attr(sliderConfig.attrSlideCurrent, '').attr(sliderConfig.attrSlideIn, '');
 
-					});
+				$currentTrigger = $triggers.filter('[' + sliderConfig.attrTrigger + '="' + currentSlideIndex + '"]');
+				$currentTrigger.attr(sliderConfig.attrTriggerCurrent, '');
 
-					// maybe: $previousSlide.removeAttr(sliderConfig.attrSlideIn);
-					$currentSlide.attr(sliderConfig.attrSlideOut, '');
-					$slides.removeAttr(sliderConfig.attrSlideCurrent);
-					$triggers.removeAttr(sliderConfig.attrTriggerCurrent);
+				// onSlideInStart
+				sliderConfig.onSlideInStart($currentSlide);
 
-					currentSlideIndex = newIndex;
-					$currentSlide = $slides.filter('[' + sliderConfig.attrSlide + '="' + currentSlideIndex + '"]');
-					$currentSlide.attr(sliderConfig.attrSlideCurrent, '').attr(sliderConfig.attrSlideIn, '');
-					// maybe: $currentSlide.removeAttr(sliderConfig.attrSlideOut);
+				// onSlideInEnd
+				var inEndTriggered = false;
 
-					$currentTrigger = $triggers.filter('[' + sliderConfig.attrTrigger + '="' + currentSlideIndex + '"]');
-					$currentTrigger.attr(sliderConfig.attrTriggerCurrent, '');
+				// Start video autoplay
+				if (sliderConfig.videoAutoPlayOnSlideStart) {
+					startVideoAutoplay($currentSlide);
+				}
 
-					// onSlideInStart
-					sliderConfig.onSlideInStart($currentSlide);
+				transitionEndOne($currentSlide, function(e) {
+					if (inEndTriggered) return false;
 
-					// onSlideInEnd
-					var inEndTriggered = false;
+					$currentSlide.removeAttr(sliderConfig.attrSlideIn);
+					sliderConfig.onSlideInEnd($currentSlide);
 
 					// Start video autoplay
-					if(sliderConfig.videoAutoPlayOnSlideStart) {
+					if (!sliderConfig.videoAutoPlayOnSlideStart) {
 						startVideoAutoplay($currentSlide);
 					}
 
-					transitionEndOne($currentSlide, function(e) {
-						if(inEndTriggered) return false;
-
-						$(this).removeAttr(sliderConfig.attrSlideIn);
-						sliderConfig.onSlideInEnd($(this));
-						//sliderConfig.onSlideInEnd($currentSlide);
-
-						// Start video autoplay
-						if(!sliderConfig.videoAutoPlayOnSlideStart) {
-							startVideoAutoplay($currentSlide);
-						}
-
-						inEndTriggered = true;
-					});
-				//}
+					inEndTriggered = true;
+				});
 			}
 
 			// METHOD: Slide next
 			var slideNext = function() {
 				var newIndex = currentSlideIndex + 1;
 
-				if(newIndex > slideMaxIndex) {
+				if (newIndex > slideMaxIndex) {
 					newIndex = 0;
 				}
 
@@ -478,7 +461,7 @@
 			var slidePrevious = function() {
 				var newIndex = currentSlideIndex - 1;
 
-				if(newIndex < 0) {
+				if (newIndex < 0) {
 					newIndex = slideMaxIndex;
 				}
 
@@ -490,14 +473,14 @@
 				var triggered = false;
 
 				$element.one('transitionend webkitTransitionEnd oTransitionEnd', function(e) {
-					if(!triggered) {
+					if (!triggered) {
+						triggered = true;
 						callback(e);
-						//triggered = true;
 					}
 				});
 
 				// Fallback for no-transition
-				if(!detectCssSupport('transition')) {
+				if (!detectCssSupport('transition')) {
 					$element.trigger('transitionend');
 				}
 			};
@@ -508,13 +491,13 @@
 				var domPrefixes = 'Webkit Moz O ms Khtml'.split(' ');
 				var elm = document.createElement('div');
 
-				if(elm.style[featurename] !== undefined ) {
+				if (elm.style[featurename] !== undefined) {
 					supported = true;
 				}
 
-				if(supported === false) {
-					for(var i = 0; i < domPrefixes.length; i++) {
-						if(elm.style[domPrefixes[i] + featurename] !== undefined) {
+				if (supported === false) {
+					for (var i = 0; i < domPrefixes.length; i++) {
+						if (elm.style[domPrefixes[i] + featurename] !== undefined) {
 							supported = true;
 							break;
 						}
@@ -524,10 +507,10 @@
 				return supported;
 			}
 			// Do action
-			if(sliderAction === null) {
+			if (sliderAction === null) {
 				init();
 			} else {
-				switch(sliderAction) {
+				switch (sliderAction) {
 					case 'previous':
 						slidePrevious();
 
